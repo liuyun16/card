@@ -4,11 +4,11 @@
 {% block  title %} 卡片屋 {% endblock %}
 
 {% block page_content %}
-<div class="page-header text-center">
+<!-- div class="page-header text-center">
     <h1> 大时间周期，最小行动！</h1>
-</div>
+</div -->
 
-<form class="form form-horizontal" method="post" role="form">
+<!--form class="form form-horizontal" method="post" role="form">
   {{ form.hidden_tag() }}
   {{ wtf.form_errors(form, hiddens="only") }}
 
@@ -16,12 +16,18 @@
 
   {{ wtf.form_field(form.body)}}
   {{ wtf.form_field(form.submit)}}
-</form>
+</form -->
 
-<div class="container-fluid" style=
-"margin-top:5rem;">
+<div class="container-fluid" style="margin-top:5rem;">
 
     <div class="card-columns">
+      <!-- Create new card -->
+      <div class="card">
+          <div class="card-header  text-center"><h3>新建卡片</h3></div>
+          <div class="card-body">
+            <p class="card-text">{{ wtf.quick_form(form) }}</p>
+          </div>
+      </div>
         <!-- Card 4 -->
         <!-- {% for card in cards %}
         <div class="card ">
