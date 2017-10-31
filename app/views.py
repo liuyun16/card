@@ -61,6 +61,9 @@ def card():
     form = CardForm()
     user = current_user._get_current_object()
 
+    print(request)
+    print(request.args.get("{card.id}"))
+
     if form.validate_on_submit():
         card = Card(form.title.data, form.body.data)
         card.author = user

@@ -40,8 +40,28 @@
           <div class="card-body">
             <h4 class="card-title">{{card.title}}</h4>
          <p class="card-text">{{ card.body_html | markdown }}</p>
-         <p class="card-text"><small class="text-muted">{{ moment(card.timestamp).fromNow()}}</small></p>
-       </div>
+         <div class= "card-footer">
+
+         <p class="card-text "><small class="text-muted">{{ moment(card.timestamp).fromNow()}}</small></p>
+
+         <form >
+           <input type="submit" name= "{{card.id}}" value="删除"class="btn  btn-sm "></input>
+         </form>
+
+        </div>
+         <!-- <div class="card-footer">
+           <ul class="nav nav-pills card-footer-pills">
+             <li class="nav-item">
+               <input type="submit" name="del" value = "{{card.id}}" class="btn" ></input>
+               <a class="nav-link active" href="#">Active</a>
+             </li>
+             <li class="nav-item">
+               <a class="nav-link" href="#">编辑-待开发</a>
+             </li>
+
+           </ul>
+</div> -->
+         </div>
      </div>
       {% endfor %}
 
