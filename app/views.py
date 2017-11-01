@@ -6,7 +6,8 @@ from app import app, db, loginmanager, markdown, pagedown, moment
 from .models import User, Role, Card
 from sqlalchemy.sql.expression import func
 from flaskext.markdown import Markdown
-import markdown
+
+from markdown import markdown
 
  #回调函数，如果能找到用户，这个函数必须返回用户对象，否则返回None
 from . import loginmanager
@@ -61,8 +62,8 @@ def card():
     form = CardForm()
     user = current_user._get_current_object()
 
-    print(request)
-    print(request.args.get("{card.id}"))
+    # print(request)
+    # print(request.args.get("{card.id}"))
 
     if form.validate_on_submit():
         card = Card(form.title.data, form.body.data)
@@ -77,16 +78,31 @@ def card():
     return render_template('index.html', form=form, cards=cards)
 
 
-# @app.route('/new', methods=['GET', 'POST'])
-# def new():
-#     form = CardForm()
-#     if form.validate_on_submit():
-#         print(form.title.data, form.body.data)
-#         card = Card(form.title.data, form.body.data)
-#         db.session.add(card)
-#         db.session.commit()
-#         return redirect(url_for('.index'))
-#     return render_template('index.html', form = form)
+
+@app.route('/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit(id):
+    card = Card.query.get_or_404(id)
+    user = current_user._get_current_object()
+    if current_user != card.author:
+        abort(403)
+    form = CardForm()
+    if form.validate_on_submit():
+        print(form.title.data, form.body.data)
+        card.title = form.title.data
+        card.body = form.body.data
+        card.body_html = markdown(card.body, output_format='html')
+        print("markdown is ")
+        print(card.body_html)
+        db.session.add(card)
+        flash("卡片内容已经更新")
+        db.session.commit()
+        cards = Card.query.filter_by(author = user).order_by(Card.timestamp.desc()).limit(8)
+        return redirect(url_for('card'))
+    form.body.data = card.body
+    form.title.data = card.title
+    cards = Card.query.filter_by(author = user).order_by(Card.timestamp.desc()).limit(8)
+    return render_template('edit_card.html', form = form,cards = cards)
 
 #新功能测试页面
 @app.route('/test', methods = ['GET', 'POST'])
@@ -116,7 +132,6 @@ def show_all():
         #将数据库查询结果乱序
 #         cards = Card.query.order_by(func.random()).all()
         cards = Card.query.filter_by(author = user).order_by(func.random()).limit(6)
-
 
     else:
         cards = Card.query.filter_by(author = user).order_by(Card.timestamp.desc()).all()
