@@ -25,7 +25,9 @@
         <!-- Card 4 -->
         <!-- {% for card in cards %}
         <div class="card ">
-            <div class="card-header  text-center"><h3>{{card.title}}</h3></div>
+        <div class="card-header">
+              <div class="card-header  text-center"><h3>{{card.title}}</h3></div>
+          </div>
             <div class="card-body">
                 <p class="card-text">{{ card.body_html | markdown }}</p>
             </div>
@@ -34,14 +36,31 @@
         {% endfor %} -->
 
         <!-- 卡片可增加图片> -->
-       {% for card in cards %}
+        {% for card in cards %}
         <div class="card">
+          <div class="card-img-overlay text-right">
+            <a href ="{{url_for('.edit', id=card.id)}}" value="编辑"class="btn  text-warning  "  >编辑</a >
+          </div>
           <img class="card-img-top img-fluid" src="/static/desert-sky-1537792.jpg" alt="Card image cap">
           <div class="card-body">
             <h4 class="card-title">{{card.title}}</h4>
          <p class="card-text">{{ card.body_html | markdown }}</p>
-         <p class="card-text"><small class="text-muted">{{ moment(card.timestamp).fromNow()}}</small></p>
-       </div>
+         <p class="card-text "><small class="text-muted">{{ moment(card.timestamp).fromNow()}}</small></p>
+
+
+         <!-- <div class="card-footer">
+           <ul class="nav nav-pills card-footer-pills">
+             <li class="nav-item">
+               <input type="submit" name="del" value = "{{card.id}}" class="btn" ></input>
+               <a class="nav-link active" href="#">Active</a>
+             </li>
+             <li class="nav-item">
+               <a class="nav-link" href="#">编辑-待开发</a>
+             </li>
+
+           </ul>
+</div> -->
+         </div>
      </div>
       {% endfor %}
 
